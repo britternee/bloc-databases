@@ -1,0 +1,152 @@
+Exercises 
+
+
+1. List the commands for adding, updating, and deleting data.
+
+A: Adding data: INSERT INTO; updating data: UPDATE; deleting data: DELETE.
+
+
+2. Explain the structure for each type of command.
+
+A: 
+- For adding data, we would write:
+    INSERT INTO tablename (column1name, column2name)
+    VALUES
+    (column1 value, column2 value),
+    (column1 value, column2 value);
+
+- For updating data, we would write:
+    UPDATE tablename SET column2value=newvalue WHERE column1value=value;
+
+-For deleting data, we can write:
+    DELETEFROM tablename WHERE column1name=value;
+
+3, What are some of the data types that can be used in tables? Give a real-world example of each type.
+
+A: A timestamp could be used in a database for a chat application to show when each message was sent. An integer could be used for storing the number of items available in inventory in an e-commerce app. Money can be used to store currency amounts, such as the amount of debt outstanding at a credit card merchant. varchar can be used for strings with a limit on how many characters, such as storing usernames for a website.
+
+
+4. Decide how to create a new table to hold a list of people invited to a wedding dinner. The table needs to have first and last names, whether they sent in their RSVP, the number of guests they are bringing, and the number of meals (1 for adults and 1/2 for children).
+
+- Which data type would you use to store each of the following pieces of information?
+  - First and last name: text
+  - Whether they sent in their RSVP: boolean
+  - Number of guests: integer
+  - Number of meals: decimal
+
+- Write a command that creates the table to track the wedding dinner.
+
+CREATE TABLE wedding (
+  firstname text,
+  lastname text,
+  rsvp boolean,
+  guestnum integer,
+  mealnum decimal(1, 1)
+);
+
+- Write a command that adds a column to track whether the guest sent a thank you card.
+
+ALTER TABLE wedding ADD COLUMN thankyou boolean;
+
+
+- You have decided to move the data about the meals to another table, so write a command to remove the column storing the number meals from the wedding table.
+
+ALTER TABLE wedding DROP COLUMN mealnum;
+
+
+- The guests will need a place to sit at the reception, so write a command that adds a column for table number.
+
+ALTER TABLE wedding ADD COLUMN tablenum integer;
+
+
+- The wedding is over and we do not need to keep this information, so write a command that deletes the table numbers from the database.
+
+ALTER TABLE wedding DROP COLUMN tablenum;
+
+
+
+5. Write a command to create a new table to hold the books in a library with the columns ISBN, title, author, genre, publishing date, number of copies, and available copies.
+
+CREATE TABLE library (
+  ISBN bigint,
+  title text,
+  author text,
+  genre text,
+  pubdate date,
+  numcopies integer,
+  availcopies integer
+);
+
+
+- Find three books and add their information to the table.
+
+INSERT INTO library (ISBN, title, author, genre, pubdate, numcopies, availcopies)
+VALUES
+(9780393327960, 'And The Sea Will Tell', 'Bugliosi, Vincent', 'True Crime', '2006-04-17', 3, 1),
+(9780735212169, 'The Girl On The Train', 'Hawkins, Paula', 'Suspense', '2016-08-23', 5, 2),
+(9780316055420, 'The Goldfinch', 'Tartt, Donna', 'Literature & Fiction', '2016-06-28', 4, 0);
+
+
+- Someone has just checked out one of the books. Change the number of available copies to 1 fewer.
+
+UPDATE library SET availcopies=0 WHERE ISBN=9780393327960;
+
+
+- Now one of the books has been added to the banned books list. Remove it from the table.
+
+DELETE FROM library WHERE ISBN=9780735212169;
+
+
+
+6. Write a command to make a new table to hold spacecrafts. Information should include id, name, year launched, country of origin, a brief description of the mission, orbiting body, if it is currently operating, and its approximate miles from Earth. In addition to the table creation, provide commands that perform the following operations:
+
+CREATE TABLE spacecrafts (
+  id integer,
+  name text,
+  launchyear smallint,
+  origcountry text,
+  mission text,
+  orbbody text,
+  inoperation boolean,
+  milesfromearth bigint
+);
+
+- Add three non-Earth-orbiting satellites to the table.
+
+INSERT INTO spacecrafts (id, name, launchyear, origcountry, mission, orbbody, inoperation, milesfromearth)
+VALUES
+(36576, 'Akatsuki', 2010, 'Japan', 'Study atmosphere', 'Venus', true, 25700000),
+(39378, 'MAVEN', 2013, 'USA', 'Study atmosphere', 'Mars', true, 54600000),
+(35315, 'Lunar Reconnaissance Orbiter', 2009, 'USA', 'Identify landing sites', 'Moon', true, 238900);
+
+
+- Remove one of the satellites from the table since it has just crashed into the planet.
+
+DELETE FROM spacecrafts where id=36576;
+
+
+- Edit another satellite because it is no longer operating and change the value to reflect that.
+
+UPDATE spacecrafts SET inoperation=false WHERE id=39378;
+
+
+
+7. Write a command to create a new table to hold the emails in your inbox. This table should include an id, the subject line, the sender, any additional recipients, the body of the email, the timestamp, whether or not you have read the email, and the id of the email chain it's in. Also provide commands that perform the following operations:
+
+- Add three new emails to the inbox.
+
+INSERT INTO inbox (id, subject, sender, cc, body, received, readstatus, chainid)
+VALUES
+(001, 'Meeting tomorrow', 'weber@worst.com', 'david@best.com', 'Hey guys - can we meet tomorrow at 10am?', '2018-08-09 19:10:25', false, 34567),
+(008, 'Cancel project', 'frank@awful.com', 'olie@helpful.com', 'I need to cancel our project. Our budget got slashed so we cannot afford it anymore.', '2018-08-11 07:12:12', true, 35543),
+(009, 'Promotion', 'weber@worst.com', 'None', 'Brittany you are a gem and we want to promote you and give you a lot more money!', '2018-08-14 13:11:14', true, 36743);
+
+
+- You deleted one of the emails, so write a command to remove the row from the inbox table.
+
+DELETE FROM inbox where id=001;
+
+
+- You started reading an email but just heard a crash in another room. Mark the email as unread before investigating the crash, so you can come back and read it later.
+
+UPDATE inbox SET readstatus=false WHERE id=009;
